@@ -3,6 +3,9 @@ using UnityEngine;
 public class Train : MonoBehaviour {
     [SerializeField] private bool isPointingRight;
 
+    private float maxSpeed = 3f;
+    private float acceleration = 1.5f;
+
     private bool shouldStop;
     private Rigidbody2D rigidbodyComponent;
 
@@ -24,22 +27,13 @@ public class Train : MonoBehaviour {
         }
     }
 
-    private void Update() { }
-
     private void FixedUpdate() {
 
         // Managing the train's movement based on signals.
-        if (shouldStop) { 
-            if (rigidbodyComponent.linearVelocity.magnitude > 0.1f)
-                rigidbodyComponent.AddForce((isPointingRight ? Vector2.left : Vector2.right) * 2);
-            else
-                rigidbodyComponent.linearVelocity = Vector2.zero;
-        } else {
-            if (rigidbodyComponent.linearVelocity.magnitude < 2.9f)
-                rigidbodyComponent.AddForce((isPointingRight ? Vector2.right : Vector2.left) * 2);
-            else
-                rigidbodyComponent.linearVelocity = new Vector2(isPointingRight ? 3 : -3, 0);
-        }
+        float targetSpeed = shouldStop ? 0f : (isPointingRight ? maxSpeed : -maxSpeed);
+        float currentSpeed = rigidbodyComponent.linearVelocity.x;
+        float newSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, acceleration * Time.fixedDeltaTime);
+        rigidbodyComponent.linearVelocity = new Vector2(newSpeed, 0f);
     }
 
     private void OnTriggerStay2D(Collider2D collision) {
@@ -47,6 +41,8 @@ public class Train : MonoBehaviour {
         // Conditions for colliding with signal.
         if (collision.gameObject.layer == 6) {
             Signal signal = collision.GetComponent<Signal>();
+            if (signal == null)
+                return;
             bool sameDirection = (isPointingRight && signal.isPointingRight) || (!isPointingRight && !signal.isPointingRight);
             shouldStop = sameDirection && !signal.isGreen;
         }

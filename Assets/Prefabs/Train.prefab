@@ -86,7 +86,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50a34487a1c7a654a91ccc494145ea21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Train
-  isPointingRight: 0
+  isPointingRight: 1
 --- !u!1 &6402862411225286233
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,9 +12,12 @@ public class Signal : MonoBehaviour {
         rendererComponent.color = Color.red;
     }
 
+    private void FixedUpdate() {
+        rendererComponent.color = isGreen ? Color.green : Color.red;
+    }
+
     private void OnMouseDown() {
         isGreen = !isGreen;
-        rendererComponent.color = isGreen ? Color.green : Color.red;
         Debug.Log("Signal state changed: " + (isGreen ? "Green" : "Red"));
     }
 }

@@ -5,14 +5,17 @@ public class Switch : MonoBehaviour {
     [SerializeField] private GameObject straight;
     [SerializeField] private GameObject diverted;
 
+    [SerializeField] public bool isDivergingRight;
+    [SerializeField] public bool isDivergingDown;
+    
     public bool isStraight;
 
     private void Start() {
+        isStraight = true;
+        
         constant.gameObject.SetActive(true);
         straight.gameObject.SetActive(true);
         diverted.gameObject.SetActive(false);
-
-        isStraight = true;
     }
 
     private void FixedUpdate() {
